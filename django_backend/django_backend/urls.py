@@ -24,11 +24,12 @@ from django.urls import include, path
 from rest_framework import routers
 from rest_api import views
 from django.contrib import admin
-from rest_api.views import UserList, UserDetails, GroupList
+# from rest_api.views import UserList, UserDetails, GroupList
 
 router = routers.DefaultRouter()
-# router.register(r'users', views.UserViewSet)
-# router.register(r'groups', views.GroupViewSet)
+router.register(r'users', views.UserViewSet)
+router.register(r'groups', views.GroupViewSet)
+# router.register(r'signup', views.SignupViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -37,7 +38,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    path('users/', UserList.as_view(), name='get_all_users'),
-    path('users/<pk>/', UserDetails.as_view()),
-    path('groups/', GroupList.as_view()),
+    # path('users/', UserList.as_view(), name='get_all_users'),
+    # path('users/<pk>/', UserDetails.as_view()),
+    # path('groups/', GroupList.as_view()),
 ]

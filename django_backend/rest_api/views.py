@@ -12,7 +12,17 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
+    # permission_classes = [permissions.IsAdminUser, TokenHasReadWriteScope]
 
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action == 'create':
+            permission_classes = []
+        else:
+            permission_classes = [permissions.IsAdminUser]
+        return [permission() for permission in permission_classes]
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
@@ -20,23 +30,31 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-
-# Create the API views
-class UserList(generics.ListCreateAPIView):
-    permission_classes = [permissions.IsAdminUser, TokenHasReadWriteScope]
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetails(generics.RetrieveAPIView):
-    permission_classes = [permissions.IsAdminUser, TokenHasReadWriteScope]
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-class GroupList(generics.ListAPIView):
     permission_classes = [permissions.IsAdminUser, TokenHasScope]
     required_scopes = ['groups']
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
+
+# class SignupViewSet(viewsets.ModelViewSet):
+#     queryset = User.objects.all().order_by('-date_joined')
+#     serializer_class = UserSerializer
+
+
+# Create the API views
+# class UserList(generics.ListCreateAPIView):
+#     permission_classes = [permissions.IsAdminUser, TokenHasReadWriteScope]
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
+
+# class UserDetails(generics.RetrieveAPIView):
+#     permission_classes = [permissions.IsAdminUser, TokenHasReadWriteScope]
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
+# class GroupList(generics.ListAPIView):
+#     permission_classes = [permissions.IsAdminUser, TokenHasScope]
+#     required_scopes = ['groups']
+#     queryset = Group.objects.all()
+#     serializer_class = GroupSerializer
+
 
 
